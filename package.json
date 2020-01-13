@@ -1,0 +1,17 @@
+{
+  "name": "parser",
+  "version": "1.0.0",
+  "description": "parser",
+  "scripts": {},
+  "author": "stadnikEV",
+  "license": "ISC",
+  "dependencies": {
+    "excel4node": "^1.7.2",
+    "json2csv": "^4.3.3",
+    "needle": "^2.4.0",
+    "rimraf": "^2.6.3",
+    "strip-comments": "^2.0.1",
+    "xlsx": "^0.14.1",
+    "xlsx-to-json": "^0.3.0"
+  }
+}
