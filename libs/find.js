@@ -1,3 +1,4 @@
+const config = require('../config')
 const findEmail = require('./find-email')
 const Block = require('./block')
 const consoleProgress = require('./console-progress')
@@ -35,7 +36,7 @@ module.exports = companies => {
 
         setTimeout(() => {
           find()
-        }, 1000)
+        }, config.timeoutParsing)
       }
 
       catch(e) {
@@ -57,7 +58,7 @@ module.exports = companies => {
 
           setTimeout(() => {
             find()
-          }, 1000)
+          }, config.timeoutParsing)
 
           return
         }

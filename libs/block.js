@@ -1,7 +1,8 @@
+const config = require('../config')
 
 class Block {
   constructor() {
-    this.limit = 5
+    this.limit = config.limitNotFoundLink
     this.startProtaction = null
     this.protection = 0
   }

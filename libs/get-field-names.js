@@ -1,5 +1,5 @@
 module.exports = data => {
-  const fieldNames = ['id', 'email', 'status', 'link', 'email_1']
+  const fieldNames = ['id', 'email', 'status', 'link']
 
   Object.keys(data[0]).forEach(fieldName => {
     if (fieldNames.indexOf(fieldName) !== -1) {

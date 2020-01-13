@@ -34,7 +34,7 @@ const getStatusStatistic = ({ status, all }) => {
   let text = ''
 
   statusNames.forEach(statusName => {
-    text += `${statusName}: ${parseInt(( status[statusName].length / all ) * 100)}%\n`
+    text += `${statusName}: ${(( status[statusName].length / all ) * 100).toFixed(1)}%\n`
   })
 
   return text
@@ -44,7 +44,7 @@ const getStatusStatistic = ({ status, all }) => {
 const getMainStatistic = ({ companies, statusStatistic, all }) => {
   const finded = getFinded(companies)
   let text = `Найдено: ${finded} из ${all}\n`
-  text += `Найдено в процентном соотношении: ${parseInt((finded / all) * 100)}%\n\n`
+  text += `Найдено в процентном соотношении: ${((finded / all) * 100).toFixed(1)}%\n\n`
   text += statusStatistic
   return text
 }
