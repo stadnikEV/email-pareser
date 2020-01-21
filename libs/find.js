@@ -1,12 +1,15 @@
 const config = require('../config')
 const findEmail = require('./find-email')
-const Block = require('./block')
+const Limit = require('./limit')
 const consoleProgress = require('./console-progress')
+const proxy = require('./proxy.js')
+const saveResult = require('./save-result.js')
 
 
-module.exports = companies => {
+module.exports = origin => {
   return new Promise(async function(resolve, reject) {
-    const block = new Block()
+    let companies = origin
+    const limit = new Limit()
     const result = []
     let company = null
 
@@ -29,12 +32,16 @@ module.exports = companies => {
         company.email = response.email
         company.status = response.status
         company.link = response.link
+        company.proxy = proxy.get() || ''
 
         consoleProgress({ message: response.status, email: response.email, id: company.id, found, lastId, firstId })
 
         result.push(company)
 
+        await saveResult({ companies: result })
+
         setTimeout(() => {
+          proxy.countStep()
           find()
         }, config.timeoutParsing)
       }
@@ -46,22 +53,44 @@ module.exports = companies => {
           company.email = ''
           company.status = e.errorMessage
           company.link = e.link
+          company.proxy = proxy.get() || ''
           result.push(company)
 
-          if (block.isBlock({ message: e.errorMessage })) {
-            console.log('Блокировка запросов')
-            const limit = -block.getLimit()
-            result.splice(limit)
+          if (e.errorMessage === 'Прокси закончились') {
+            result.pop()
             resolve({ searchResult: result })
             return
           }
 
+          const { limitMessage, limitCount } = limit.isLimit({ errorMessage: e.errorMessage })
+
+          if (limitMessage) {
+            consoleProgress({ message: limitMessage, id: company.id, found, lastId, firstId })
+            const limitValue = -limitCount
+            const removed = result.splice(limitValue)
+
+            if (!proxy.isInit()) {
+              resolve({ searchResult: result })
+              return
+            }
+
+            companies = [].concat(companies, removed.reverse())
+
+            proxy.next()
+          }
+
+          if (result.length !== 0) {
+            await saveResult({ companies: result })
+          }
+
           setTimeout(() => {
+            proxy.countStep()
             find()
           }, config.timeoutParsing)
 
           return
         }
+
         reject(e)
         console.log(e)
       }

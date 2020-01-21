@@ -60,10 +60,17 @@ module.exports = site => {
       const response = await requestHtml(site)
 
       url = response.url
+
       email = await getEmail({ html: response.html, url })
 
       if (email.length === 0) {
+
         links = getLinks({ html: response.html, url })
+
+        if (links.href.length > 20) {
+          throw({ errorMessage: 'Превышено количество линков', link: url })
+          return
+        }
 
         if (links.href.length === 0) {
           throw({ errorMessage: 'Ссылок нет, возможно ЗАЩИТА или SPA', link: url })
