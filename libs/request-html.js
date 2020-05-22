@@ -17,9 +17,10 @@ const requestHtml = url => {
       }
     }
 
+
     request({
       method: "GET",
-      url,
+      url: url.indexOf('http') !== -1 ? url : `http://${url}`,
       proxy: proxyUrl,
       timeout: 10000,
     }, (err, res) => {

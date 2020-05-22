@@ -1,11 +1,11 @@
 
 module.exports = {
-  rangeParsing: 2000,
-  proxyLimit: 230,
-  timeoutParsing: 1000, // ms
-  limitLink: 10,
-  limitRequest: 10,
-  redirectLimit: 5,
+  rangeParsing: 5700, // дефолтный диапазон количества сайтов для парсинга
+  proxyLimit: 230, // количество посещаемых сайтов с одного proxy
+  timeoutParsing: 10, // задержка между окончанем парсинга одного сайта и началом парсинга следующего - ms
+  limitLink: 20, // макимальное количество сайтов подряд без email и ссылок
+  limitRequest: 10, // максимально количество ошибок запроса подряд
+  redirectLimit: 5, // максимальное количество переходов c сайта
   limitNames: {
     limitLink: 'Ссылок нет, возможно ЗАЩИТА или SPA',
     limitRequest: 'Ошибка запроса',
